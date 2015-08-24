@@ -1,3 +1,3 @@
-var app = angular.module("torrentApp", ["torrentControllers"], function () {
+var app = angular.module('torrentApp', ['torrentControllers'], function () {
 
 });
