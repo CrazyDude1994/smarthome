@@ -14,23 +14,29 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th class="mdl-data-table__cell--non-numeric">Name</th>
-                    <th>Size</th>
-                    <th class="mdl-data-table__cell--non-numeric">Status</th>
+                    <th class="mdl-data-table__cell--non-numeric"><a href="#"
+                                                                     ng-click="sortType='2'; sortReverse = !sortReverse">Name
+                        </a><div ng-show="sortType == '2'" class="icon icon-ic_play-circle_outline_black_24dp"></div>
+                    </th>
+                    <th class="mdl-data-table__cell--non-numeric"><a href="#"
+                                                                     ng-click="sortType='21'; sortReverse = !sortReverse">Status</a>
+                    </th>
+                    <th><a href="#" ng-click="sortType='9'; sortReverse = !sortReverse">Speed</a></th>
+                    <th><a href="#" ng-click="sortType='3'; sortReverse = !sortReverse">Size</a></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="torrent in torrents">
+                <tr ng-repeat="torrent in torrents | orderBy:sortType:sortReverse">
                     {% verbatim %}
                     <td>{{ $index + 1 }}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{ torrent[2] }}</td>
-                    <td>{{ torrent[3] }}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{ torrent[21] }}</td>
+                    <td>{{ bytesToSize(torrent[9]) }}</td>
+                    <td>{{ bytesToSize(torrent[3]) }}</td>
                     {% endverbatim %}
                 </tr>
                 </tbody>
             </table>
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="getCustomers()">Refresh</button>
         </div>
     </div>
 {% endblock %}
