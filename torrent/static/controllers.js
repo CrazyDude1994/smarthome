@@ -16,18 +16,44 @@ controllers.controller('TorrentsController', ['$scope', '$interval', 'torrentFac
 
     $scope.startUpdater = function () {
         updateTimer = $interval(function () {
-            $scope.getCustomers();
+            $scope.getTorrents();
         }, 1000);
     };
 
-    $scope.getCustomers = function () {
-        torrentFactory.getTorrents().success(function (data) {
-            $scope.torrents = data;
-        }).error(function () {
-
+    $scope.getTorrents = function () {
+        torrentFactory.getTorrents().then(function (response) {
+            $scope.torrents = response.data;
+            $scope.error = null;
+        }, function () {
+            $scope.error = "Error!";
         });
     };
 
-    $scope.getCustomers();
+    $scope.startTorrent = function (torrentHash) {
+        torrentFactory.startTorrent(torrentHash).then(function (response) {
+        }, function() {
+            alert("Не удалось запустить торрент");
+        });
+    };
+
+    $scope.stopTorrent = function (torrentHash) {
+        torrentFactory.stopTorrent(torrentHash).then(function (response) {
+
+        }, function() {
+            alert("Не удалось остановить торрент");
+        });
+    }
+
+    $scope.removeTorrent = function (torrentHash) {
+        if (confirm("Вы действительно хотите удалить торрент?")) {
+            torrentFactory.removeTorrent(torrentHash).then(function (response) {
+
+            }, function () {
+                alert("Не удалось удалить торрент");
+            });
+        }
+    }
+
+    $scope.getTorrents();
     $scope.startUpdater();
 }]);

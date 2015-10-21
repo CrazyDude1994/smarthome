@@ -7,5 +7,20 @@ services.factory('torrentFactory', ['$http', function ($http) {
         return $http.get('/torrents/api/?format=json');
     };
 
+    factory.startTorrent = function(torrentHash) {
+        return $http.post('/torrents/api/?format=json', {"action" : "start", "hash" : torrentHash
+        });
+    };
+
+    factory.stopTorrent = function(torrentHash) {
+        return $http.post('/torrents/api/?format=json', {"action" : "stop", "hash" : torrentHash
+        });
+    };
+
+    factory.removeTorrent = function(torrentHash) {
+        return $http.post('/torrents/api/?format=json', {"action" : "remove", "hash" : torrentHash
+        });
+    };
+
     return factory;
 }]);

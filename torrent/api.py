@@ -1,5 +1,5 @@
-from urllib2 import URLError
 from rest_framework import status
+
 from rest_framework.generics import GenericAPIView
 from utorrent import client as uclient
 from rest_framework.response import Response
@@ -7,21 +7,33 @@ from rest_framework.response import Response
 from torrent.serializers import TorrentSerializer
 
 
-class TorrentsAPIView(GenericAPIView):
+TORRENT_URL = "http://localhost:8085/gui/"
+LOGIN = "admin"
+PASS = "80505071491"
 
+
+class TorrentsAPIView(GenericAPIView):
     serializer_class = TorrentSerializer
 
     def get(self, request):
         try:
-            client = uclient.UTorrentClient("http://localhost:8085/gui/", "admin", "80505071491")
+            client = uclient.UTorrentClient(TORRENT_URL, LOGIN, PASS)
         except Exception as e:
             return Response(status=status.HTTP_503_SERVICE_UNAVAILABLE)
         torrents = client.list()
         return Response(torrents[1]["torrents"])
 
     def post(self, request):
-        serializer = TorrentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            client = uclient.UTorrentClient(TORRENT_URL, LOGIN, PASS)
+        except Exception as e:
+            return Response(status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        if (request.data["action"]) == "start":
+            client.start(request.data["hash"])
+        elif (request.data["action"]) == "stop":
+            client.stop(request.data["hash"])
+        elif (request.data["action"] == "remove"):
+            client.remove(request.data["hash"])
+        else:
+            return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response(status=status.HTTP_200_OK)

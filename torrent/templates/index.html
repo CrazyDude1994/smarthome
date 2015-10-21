@@ -5,38 +5,52 @@
     <script src="{% static "torrent.js" %}"></script>
     <script src="{% static "controllers.js" %}"></script>
     <script src="{% static "factories.js" %}"></script>
+    <script src="{% static "Chart.min.js" %}"></script>
 {% endblock %}
 
 {% block content %}
     <div ng-app="torrentApp">
-        <div ng-controller="TorrentsController">
-            <table class="mdl-data-table mdl-js-data-table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th class="mdl-data-table__cell--non-numeric"><a href="#"
-                                                                     ng-click="sortType='2'; sortReverse = !sortReverse">Name
-                        </a><div ng-show="sortType == '2'" class="icon icon-ic_play-circle_outline_black_24dp"></div>
-                    </th>
-                    <th class="mdl-data-table__cell--non-numeric"><a href="#"
-                                                                     ng-click="sortType='21'; sortReverse = !sortReverse">Status</a>
-                    </th>
-                    <th><a href="#" ng-click="sortType='9'; sortReverse = !sortReverse">Speed</a></th>
-                    <th><a href="#" ng-click="sortType='3'; sortReverse = !sortReverse">Size</a></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="torrent in torrents | orderBy:sortType:sortReverse">
-                    {% verbatim %}
-                    <td>{{ $index + 1 }}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{ torrent[2] }}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{ torrent[21] }}</td>
-                    <td>{{ bytesToSize(torrent[9]) }}</td>
-                    <td>{{ bytesToSize(torrent[3]) }}</td>
-                    {% endverbatim %}
-                </tr>
-                </tbody>
-            </table>
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--3-col"></div>
+            <div ng-controller="TorrentsController">
+                <table class="mdl-data-table mdl-js-data-table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th class="mdl-data-table__cell--non-numeric"><a href="#"
+                                                                         ng-click="sortType='2'; sortReverse = !sortReverse">Name
+                        </a>
+
+                            <div ng-show="sortType == '2'" class="icon icon-ic_play-circle_outline_black_24dp"></div>
+                        </th>
+                        <th class="mdl-data-table__cell--non-numeric"><a href="#"
+                                                                         ng-click="sortType='21'; sortReverse = !sortReverse">Status</a>
+                        </th>
+                        <th><a href="#" ng-click="sortType='9'; sortReverse = !sortReverse">Speed</a></th>
+                        <th><a href="#" ng-click="sortType='3'; sortReverse = !sortReverse">Size</a></th>
+                        <th class="mdl-data-table__cell--non-numeric">Controls</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="torrent in torrents | orderBy:sortType:sortReverse">
+                        {% verbatim %}
+                        <td>{{ $index + 1 }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ torrent[2] }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ torrent[21] }}</td>
+                        <td>{{ bytesToSize(torrent[9]) }}</td>
+                        <td>{{ bytesToSize(torrent[3]) }}</td>
+                        <td>
+                            <a href="#" ng-click="startTorrent(torrent[0])">Start</a>
+                            <a href="#" ng-click="stopTorrent(torrent[0])">Stop</a>
+                            <a href="#" ng-click="removeTorrent(torrent[0])">Remove</a>
+                        </td>
+                        {% endverbatim %}
+                    </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 22pt" ng-show="error != null">Error</p>
+            </div>
         </div>
+
     </div>
 {% endblock %}
