@@ -22,5 +22,10 @@ services.factory('torrentFactory', ['$http', function ($http) {
         });
     };
 
+    factory.addTorrent = function(torrentHash) {
+        return $http.post('/torrents/api/?format=json', {"action" : "add", "url" : torrentHash
+        });
+    };
+
     return factory;
 }]);

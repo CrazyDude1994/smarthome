@@ -34,6 +34,8 @@ class TorrentsAPIView(GenericAPIView):
             client.stop(request.data["hash"])
         elif (request.data["action"] == "remove"):
             client.remove(request.data["hash"])
+        elif (request.data["action"] == "add"):
+            client.addurl(request.data["url"])
         else:
             return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
         return Response(status=status.HTTP_200_OK)

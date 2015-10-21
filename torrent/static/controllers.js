@@ -52,7 +52,16 @@ controllers.controller('TorrentsController', ['$scope', '$interval', 'torrentFac
                 alert("Не удалось удалить торрент");
             });
         }
-    }
+    };
+
+    $scope.addTorrent = function () {
+        torrentUrl = prompt("Введите URL торрента");
+        torrentFactory.addTorrent(torrentUrl).then(function (response) {
+
+        }, function () {
+            alert("Не удалость добавить торрент");
+        });
+    };
 
     $scope.getTorrents();
     $scope.startUpdater();
