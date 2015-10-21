@@ -31,7 +31,7 @@ controllers.controller('TorrentsController', ['$scope', '$interval', 'torrentFac
 
     $scope.startTorrent = function (torrentHash) {
         torrentFactory.startTorrent(torrentHash).then(function (response) {
-        }, function() {
+        }, function () {
             alert("Не удалось запустить торрент");
         });
     };
@@ -39,7 +39,7 @@ controllers.controller('TorrentsController', ['$scope', '$interval', 'torrentFac
     $scope.stopTorrent = function (torrentHash) {
         torrentFactory.stopTorrent(torrentHash).then(function (response) {
 
-        }, function() {
+        }, function () {
             alert("Не удалось остановить торрент");
         });
     }
@@ -56,11 +56,13 @@ controllers.controller('TorrentsController', ['$scope', '$interval', 'torrentFac
 
     $scope.addTorrent = function () {
         torrentUrl = prompt("Введите URL торрента");
-        torrentFactory.addTorrent(torrentUrl).then(function (response) {
+        if (torrentUrl) {
+            torrentFactory.addTorrent(torrentUrl).then(function (response) {
 
-        }, function () {
-            alert("Не удалость добавить торрент");
-        });
+            }, function () {
+                alert("Не удалость добавить торрент");
+            });
+        }
     };
 
     $scope.getTorrents();
